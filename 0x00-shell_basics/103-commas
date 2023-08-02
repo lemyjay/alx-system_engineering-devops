@@ -1,2 +1,2 @@
 #!/bin/bash
-ls -mapx
+ls -xamp
