@@ -1,1 +1,1 @@
-Some shell scripts in BASH
+Some basic shell scripts in BASH
