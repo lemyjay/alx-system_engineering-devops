@@ -1,3 +1,2 @@
 #!/bin/bash
-tail -n 1 iacta | sed '$!N;s/\n/ /' >> iacta
-
+tail -n 1 iacta | tee -a iacta
