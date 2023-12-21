@@ -15,5 +15,5 @@ if [ -e "$file" ]; then
 	fi
 
 else
-	echo "$file file does not exist"
+	echo -e "$file file does not exist"
 fi
