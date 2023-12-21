@@ -3,10 +3,16 @@
 
 file="school"
 if [ -e "$file" ]; then
-	echo "$file file exists"
-	[[ ! -s "$file" ]] && echo "$file file is empty"
-	[[ -s "$file" ]] && echo "$file file is not empty"
-	[[ -f "$file" ]] && echo "$file file is a regular file"
+	echo -e "$file file exists"
+	if [ ! -s "$file" ]; then
+		echo -e "$file file is empty"
+	else
+		echo -e "$file file is not empty"
+	fi
+
+	if [ -f "$file" ]; then
+		echo -e "$file file is a regular file"
+	fi
 
 else
 	echo "$file file does not exist"
