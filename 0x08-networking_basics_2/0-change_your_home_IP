@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+# A Bash script that configures an Ubuntu server with the below requirements:
+# - localhost resolves to 127.0.0.2
+# - facebook.com resolves to 8.8.8.8.
+
+# Copying the contents in hosts to a temp file
+cp /etc/hosts /etc/hosts.tmp
+
+# Create a temporary hosts file with the changes to be made
+sed -i 's/127.0.0.1 localhost/127.0.0.2 localhost/' /etc/hosts.tmp
+
+# Add custom entries
+echo "8.8.8.8 facebook.com" >> /etc/hosts.tmp
+
+# Replace the original hosts file with the temporary one
+cp -f /etc/hosts.tmp /etc/hosts
