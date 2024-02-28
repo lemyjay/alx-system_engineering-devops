@@ -1,0 +1,36 @@
+#!/usr/bin/env bash
+# A Bash script that configures a new Ubuntu machine to meet some requirements as a server.
+
+# Update the package list and install nginx
+apt update
+apt install -y nginx
+
+# Create the custom HTML file
+cat <<EOF > /var/www/html/404.html
+Ceci n'est pas une page
+EOF
+
+# Replace the default Nginx configuration with a custom configuration
+cat << 'EOF' > /etc/nginx/sites-available/default
+server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+
+    server_name _;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+
+    error_page 404 /404.html;
+    location = /404.html {
+        internal;
+    }
+}
+EOF
+
+# Restart Nginx to apply the changes
+service nginx restart
