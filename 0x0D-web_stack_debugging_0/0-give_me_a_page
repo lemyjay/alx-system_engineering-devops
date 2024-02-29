@@ -1,2 +1,6 @@
 #!/usr/bin/env bash
+# Restarting the apache server after making some changes
+sudo service apache2 status
 sudo service apache2 start
+sudo sed -i '/Listen 80/a Listen 8080' /etc/apache2/ports.conf
+service apache2 restart
