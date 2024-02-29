@@ -1,0 +1,5 @@
+docker exec -it 6406b957f4f6 /bin/bash
+service apache2 status
+service apache2 start
+sed -i '/Listen 80/a Listen 8080' /etc/apache2/ports.conf
+service apache2 restart
