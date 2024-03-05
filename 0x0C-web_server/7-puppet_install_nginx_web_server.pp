@@ -35,7 +35,7 @@ file { '/etc/nginx/sites-available/default':
           	}
 		rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;
 	}",
-  require => Exec['nginx'],
+  require => Package['nginx'],
 }
 
 exec { 'run':
