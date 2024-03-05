@@ -1,0 +1,7 @@
+#!/bin/bash
+
+# Copy Nginx configuration from web-01 to web-02
+scp web-01:/etc/nginx/sites-available/default web-02:/etc/nginx/sites-available/default
+
+# Restart Nginx on web-02 to apply the changes
+ssh web-02 'sudo service nginx restart'
