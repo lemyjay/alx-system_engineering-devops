@@ -1,7 +1,34 @@
 #!/bin/bash
 
-# Copy Nginx configuration from web-01 to web-02
-scp web-01:/etc/nginx/sites-available/default web-02:/etc/nginx/sites-available/default
+# Run apt-get update
+/usr/bin/apt-get update
 
-# Restart Nginx on web-02 to apply the changes
-ssh web-02 'sudo service nginx restart'
+# Install nginx
+/usr/bin/apt-get install -y nginx
+
+# Create a new index.html
+cat <<EOF > /var/www/html/index.html
+Hello World!
+EOF
+
+# Create a new error page
+cat <<EOF > /var/www/html/404.html
+Ceci n'est pas une page
+EOF
+
+# Create Nginx configuration file
+cat <<EOF > /etc/nginx/sites-available/default
+server {
+    listen 80 default_server;
+    server_name _;
+    root /var/www/html;
+    location / {
+        index index.html;
+        add_header X-Served-By \$hostname;
+    }
+    rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;
+}
+EOF
+
+# Restart Nginx
+sudo service nginx restart
