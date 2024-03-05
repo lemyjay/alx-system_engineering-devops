@@ -1,41 +1,48 @@
 # Puppet manifest to install and configure Nginx web server
-class nginx {
-  package { 'nginx':
-    ensure  => 'latest',
-    require => Package['curl'],
-  }
 
-  file { '/var/www/html/index.html':
-    content => 'Hello World!',
-    require => Package['nginx'],
-  }
-
-  file { '/etc/nginx/sites-available/default':
-    content => template('nginx/default.erb'),
-    require => Package['nginx'],
-  }
-
-  service { 'nginx':
-    ensure    => 'running',
-    enable    => true,
-    require   => [File['/var/www/html/index.html'], File['/etc/nginx/sites-available/default']],
-    subscribe => Package['nginx'],
-  }
+# Run apt-get update
+exec { 'apt-update':
+  command => '/usr/bin/apt-get update'
 }
 
-class redirect {
-  package { 'curl':
-    ensure => 'latest',
-  }
-
-  exec { 'create_redirect':
-    command  => '/bin/bash -c "echo \"location /redirect_me { return 301 http://$host/new_path; }\" > /etc/nginx/sites-available/default"',
-    unless   => '/bin/bash -c "cat /etc/nginx/sites-available/default | grep -q /redirect_me"',
-    require  => Package['nginx'],
-    subscribe => Package['nginx'],
-    notify   => Service['nginx'],
-  }
+# Install nginx
+package { 'nginx':
+  ensure  => installed,
+  require => Exec['apt-update'],
 }
 
-include nginx
-include redirect
+# Create a new index.html
+file { 'Create index.html':
+  require => Package['nginx'],
+  path    => '/var/www/html/index.html',
+  content => 'Hello World!\n'
+}
+
+# Create a new error page
+file { 'Create 404.html':
+  require => Package['nginx'],
+  path    => '/var/www/html/404.html',
+  content => 'Ceci n\'est pas une page\n'
+}
+
+file { '/etc/nginx/sites-available/default':
+  content => "server {
+		listen 80 default_server;
+		server_name _;
+		root /var/www/html;
+		location / {
+		index index.html;
+          	}
+		rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;
+	}",
+  require => Exec['nginx'],
+}
+
+exec { 'run':
+  command  => 'sudo service nginx restart',
+  provider => shell,
+  require  => [
+    File['/etc/nginx/sites-available/default'],
+    Package['nginx'],
+  ],
+}
