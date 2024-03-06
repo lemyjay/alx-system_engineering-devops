@@ -7,7 +7,7 @@ sudo apt-get -y update
 
 # Install and start HAProxy
 sudo apt-get -y install haproxy
-#sudo service haproxy start
+sudo service haproxy start
 
 # edit config file
 server_config=\
