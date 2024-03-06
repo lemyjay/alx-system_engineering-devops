@@ -13,7 +13,7 @@ package { 'haproxy':
 
 # Run for first time
 exec { 'run':
-  command => 'sudo service haproxy start',
+  command => 'service haproxy start',
   provider => shell,
   require => Package['haproxy']
 }
@@ -69,7 +69,7 @@ backend http_back
     server web-01 491649-web-01:80 check
     server web-02 491649-web-02:80 check
 
-  ",
+",
   ensure => present
 }
 
@@ -118,7 +118,7 @@ ENABLED=1
 
 # Restarts the service after all those changes have been made
 exec { 're-run':
-  command  => 'sudo systemctl restart haproxy',
+  command  => 'systemctl restart haproxy',
   provider => shell,
   require  => [
     Exec['run'],
