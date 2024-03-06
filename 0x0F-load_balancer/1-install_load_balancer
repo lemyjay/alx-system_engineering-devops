@@ -14,6 +14,7 @@ server_config=\
 "
 frontend http_front
     bind *:80
+    mode http
     default_backend http_back
 
 backend http_back
