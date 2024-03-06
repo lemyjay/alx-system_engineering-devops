@@ -66,37 +66,13 @@ frontend http_front
 
 backend http_back
     balance roundrobin
-    server web-01 491649-web-01:80 check
-    server web-02 491649-web-02:80 check
+    server 491649-web-01 100.25.0.107:80 check
+    server 491649-web-02 100.26.252.88:80 check
 
 ",
   ensure => present
 }
 
-# Updating the hosts file so it is able to resolve the server names to their IPs
-file { '/etc/hosts':
-  require => [
-    Package['haproxy'],
-    File['/etc/haproxy/haproxy.cfg']
-  ],
-  path => '/etc/hosts',
-  content => "
-127.0.0.1       localhost
-54.210.47.110   491649-lb-01
-100.26.252.88   491649-web-02
-100.25.0.107    491649-web-01
-
-# The following lines are desirable for IPv6 capable hosts
-::1     ip6-localhost ip6-loopback
-fe00::0 ip6-localnet
-ff00::0 ip6-mcastprefix
-ff02::1 ip6-allnodes
-ff02::2 ip6-allrouters
-ff02::3 ip6-allhosts
-
-",
-  ensure => present
-}
 
 file { '/etc/default/haproxy':
   ensure  => present,
@@ -123,7 +99,6 @@ exec { 're-run':
   require  => [
     Exec['run'],
     File['/etc/haproxy/haproxy.cfg'],
-    File['/etc/hosts'],
     File['/etc/default/haproxy'],
     Package['haproxy'],
   ],
