@@ -1,2 +1,13 @@
 #!/usr/bin/env bash
-# 
+# A bash script that configures a server to meet the following requirements:
+#   - Has Nginx installed and running, listening on port 80
+
+# Update the package list and install nginx
+sudo apt update
+sudo apt install -y nginx
+
+sudo sed -i 's/sites-enabled/sites-available/g' "/etc/nginx/nginx.conf";
+
+
+# Restart Nginx to apply the changes
+service nginx restart
