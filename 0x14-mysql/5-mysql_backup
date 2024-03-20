@@ -1,24 +1,6 @@
 #!/usr/bin/env bash
-
-# Check if the password argument is provided
-if [ $# -ne 1 ]; then
-    echo "Usage: $0 <mysql_password>"
-    exit 1
-fi
-
+# SQL backing up
 # Get the current date in the required format
 DATE=$(date +"%d-%m-%Y")
-
-# Check if mysqldump was successful
-if ! mysqldump -u root --password="$1" --all-databases > backup.sql; then
-    echo "Error: MySQL dump failed."
-    exit 1
-fi
-
-# Check if archive was created
-if tar -czvf "${DATE}.tar.gz" backup.sql; then
-    echo "Backup archive created: ${DATE}.tar.gz"
-    #rm backup.sql  # Remove the SQL dump file after archiving
-else
-    echo "Error creating backup archive."
-fi
+mysqldump -u root --password="$1" --all-databases > backup.sql
+tar -czvf "${DATE}.tar.gz" backup.sql
