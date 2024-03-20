@@ -1,0 +1,3 @@
+# 0x14. MySQL
+
+Installing mysql on the various servers...
