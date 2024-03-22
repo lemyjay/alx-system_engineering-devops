@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 # Configuring to meet the requirements...
-sudo chmod 644 /etc/nginx/nginx.conf
+# change ownership and permissions of config file
+chmod 700 /etc/nginx/nginx.conf
+chown nginx:nginx /etc/nginx/nginx.conf
 sed -i -E 's/^#?user .*;$/user nginx;/' /etc/nginx/nginx.conf
 sed -i -E 's/listen\s+80;/listen 8080;/' /etc/nginx/sites-available/default
-service nginx restart
+# netstat -lpn shows apache2 is using 8080, stopping it then running nginx
+pkill apache2
+sudo -u nginx service nginx restart
