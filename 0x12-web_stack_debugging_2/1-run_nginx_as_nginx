@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+# Configuring to meet the requirements...
+sudo chmod 644 /etc/nginx/nginx.conf
+sed -i -E 's/^#?user .*;$/user nginx;/' /etc/nginx/nginx.conf
+sed -i -E 's/listen\s+80;/listen 8080;/' /etc/nginx/sites-available/default
+service nginx restart
