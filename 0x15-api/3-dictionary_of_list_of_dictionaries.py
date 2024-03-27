@@ -13,7 +13,7 @@ if __name__ == "__main__":
         BASE_URL = 'https://jsonplaceholder.typicode.com/'
         USERS = f"{BASE_URL}users/"
         ALL_USERS = requests.get(USERS).json()
-        
+
         # USER_URL = f"{BASE_URL}users/{EMPLOYEE_ID}"
         # TODOS_URL = f"{BASE_URL}/todos?userId={EMPLOYEE_ID}"
         # EMPLOYEE_NAME = requests.get(USER_URL).json()["name"]
@@ -23,9 +23,9 @@ if __name__ == "__main__":
         # print(requests.get(USERS).json())
         # print(requests.get(USERS).text)
         # print(NUMBER_OF_USERS)
-        
+
         file_path = 'todo_all_employees.json'
-        
+
         final = '{'
         for i in ALL_USERS:
             current_user_id = int(i['id'])
@@ -34,16 +34,17 @@ if __name__ == "__main__":
             USERNAME = requests.get(USER_URL).json()["username"]
             ALL_TODOS = requests.get(TODOS_URL).json()
 
-            
             task_list = '['
             for j in ALL_TODOS:
                 TASK_COMPLETED_STATUS = str(j['completed']).lower()
                 TASK_TITLE = j['title']
-                task_info = '{' + f'"username": "{USERNAME}", "task": "{TASK_TITLE}", "completed": {TASK_COMPLETED_STATUS}' + '}'
+                task_info = '{' + f'"username": "{USERNAME}", "task": '
+                task_info += f'"{TASK_TITLE}", "completed": '
+                task_info += f'{TASK_COMPLETED_STATUS}' + '}'
                 task_list += task_info + ', '
             task_list = task_list[:-2]
             task_list += '], '
-            final +=  f'"{current_user_id}": {task_list}'
+            final += f'"{current_user_id}": {task_list}'
         final = final[:-2]
         final += '}'
         with open(file_path, 'w') as file:
