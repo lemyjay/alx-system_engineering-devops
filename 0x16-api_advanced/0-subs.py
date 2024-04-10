@@ -5,7 +5,6 @@ number of subscribers (not active users, total subscribers) for
 a given subreddit.
 '''
 import requests
-import requests.utils
 
 
 def number_of_subscribers(subreddit):
@@ -14,13 +13,11 @@ def number_of_subscribers(subreddit):
     subreddit is invalid
     '''
     url = f"https://www.reddit.com/r/{subreddit}/about.json"
-    headers = requests.utils.default_headers()
-    headers.update({'User-Agent': 'Custom User Agent'})
+    headers = {'User-Agent': 'Custom User Agent'}
     response = requests.get(url, headers=headers, allow_redirects=False)
 
-
-    data = response.json()
-    if data['data']['subscribers']:
+    if response.status_code == 200:
+        data = response.json()
         return data['data']['subscribers']
-
-    return 0
+    else:
+        return 0
