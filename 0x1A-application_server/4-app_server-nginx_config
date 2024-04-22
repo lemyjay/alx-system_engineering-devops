@@ -60,7 +60,7 @@ server {
 	}
 
 	location /api/ {
-		proxy_pass http://localhost:5002/api/v1/;
+		proxy_pass http://localhost:5002/api/;
 	}
 
 	location / {
