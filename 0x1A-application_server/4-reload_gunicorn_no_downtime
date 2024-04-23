@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+# A script to reload Gunicorn without downtime
 
 # Get the PID of the Gunicorn master process
 PID=$(ps aux | grep '[g]unicorn.*master' | awk '{print $2}')
