@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
 # A script to reload Gunicorn without downtime
 
-# Get the PID of the Gunicorn master process using pgrep
-PID=$(pgrep -f '[g]unicorn.*master')
+# Define the path to your Gunicorn process
+GUNICORN_PROCESS_PATH="/path/to/your/gunicorn/process"
 
-# Check if Gunicorn is running
-if [ -z "$PID" ]; then
+# Check if Gunicorn process is running
+if pgrep -f "$GUNICORN_PROCESS_PATH" >/dev/null; then
+    echo "Reloading Gunicorn without downtime..."
+    # Send a signal to gracefully reload Gunicorn
+    kill -s HUP "$(pgrep -f "$GUNICORN_PROCESS_PATH")"
+    echo "Gunicorn reloaded successfully."
+else
     echo "Gunicorn is not running."
-    exit 1
 fi
-
-# Send a HUP signal to the Gunicorn master process, double quoting $PID
-kill -HUP "$PID"
-
-echo "Gunicorn reloaded gracefully."
 
