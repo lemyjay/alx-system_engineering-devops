@@ -1,20 +1,21 @@
 [Unit]
-Description=Gunicorn instance to serve AirBnB clone
+Description=Gunicorn instance to serve web_dynamic/2-hbnb.py
 After=network.target
 
 [Service]
 User=ubuntu
 Group=ubuntu
-WorkingDirectory=/path/to/your/project
+WorkingDirectory=/home/ubuntu/AirBnB_clone_v4
 Environment="HBNB_MYSQL_USER=hbnb_dev"
 Environment="HBNB_MYSQL_PWD=hbnb_dev_pwd"
 Environment="HBNB_MYSQL_HOST=localhost"
 Environment="HBNB_MYSQL_DB=hbnb_dev_db"
 Environment="HBNB_TYPE_STORAGE=db"
 Environment="HBNB_API_PORT=5003"
-ExecStartPre=/bin/bash -c 'if [ ! -f /tmp/airbnb-access.log ]; then touch /tmp/airbnb-access.log; fi'
-ExecStartPre=/bin/bash -c 'if [ ! -f /tmp/airbnb-error.log ]; then touch /tmp/airbnb-error.log; fi'
-ExecStart=/usr/local/bin/gunicorn --workers=3 --bind 0.0.0.0:5003 web_dynamic.2-hbnb:app >> /tmp/airbnb-access.log 2>> /tmp/airbnb-error.log
+ExecStart=/usr/local/bin/gunicorn --workers=3 --bind 0.0.0.0:5003 web_dynamic.2-hbnb:app
+StandardOutput=/tmp/airbnb-access.log
+StandardError=/tmp/airbnb-error.log
+Restart=always
 
 [Install]
 WantedBy=multi-user.target
