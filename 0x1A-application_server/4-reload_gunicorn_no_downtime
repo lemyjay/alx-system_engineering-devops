@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 # A script to reload Gunicorn without downtime
 
-# Get the PID of the Gunicorn master process
-PID=$(ps aux | grep '[g]unicorn.*master' | awk '{print $2}')
+# Get the PID of the Gunicorn master process using pgrep
+PID=$(pgrep -f '[g]unicorn.*master')
 
 # Check if Gunicorn is running
 if [ -z "$PID" ]; then
@@ -10,8 +10,8 @@ if [ -z "$PID" ]; then
     exit 1
 fi
 
-# Send a HUP signal to the Gunicorn master process
-kill -HUP $PID
+# Send a HUP signal to the Gunicorn master process, double quoting $PID
+kill -HUP "$PID"
 
 echo "Gunicorn reloaded gracefully."
 
